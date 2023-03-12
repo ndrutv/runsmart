@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     });
 
-    
+
     // Catalog
     // -- Items
     const content = document.querySelectorAll('.catalog-item__content');
@@ -66,22 +66,20 @@ document.addEventListener('DOMContentLoaded', () => {
         item.classList.add('catalog-item__content_active');
     })
 
-    const toggleContent = (i) => {
-        content[i].classList.toggle('catalog-item__content_active');
-        list[i].classList.toggle('catalog-item__list_active');
+    const toggleItemContent = (block, i) => {
+        block.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            content[i].classList.toggle('catalog-item__content_active');
+            list[i].classList.toggle('catalog-item__list_active');
+        })
     }
 
     links.forEach((link, i) => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            toggleContent(i);
-        })
+        toggleItemContent(link, i);
     })
 
     backs.forEach((back, i) => {
-        back.addEventListener('click', (e) => {
-            e.preventDefault();
-            toggleContent(i);
-        })
+        toggleItemContent(back, i);
     })
 })
