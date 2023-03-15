@@ -1,29 +1,54 @@
-// Slider
-const slider = tns({
-    container: '.carousel__inner',
-    controls: false,
-    nav: false,
-    center: true,
-    autoWidth: true,
-    items: 1,
-    responsive: [
-
-    ]
-});
-
-const prev = document.querySelector('.prev');
-const next = document.querySelector('.next');
-
-prev.addEventListener('click', () => {
-    slider.goTo('prev');
-});
-
-next.addEventListener('click', () => {
-    slider.goTo('next');
-});
-
 document.addEventListener('DOMContentLoaded', () => {
+    // Slider
+    const carouselWrapper = document.querySelector('.carousel__slide-wrapper');
+    const carouselInner = document.querySelector('.carousel__inner');
+    const slides = document.querySelectorAll('.carousel__item');
+    const width = window.getComputedStyle(carouselWrapper).width;
+    const prev = document.querySelector('.carousel__prev');
+    const next = document.querySelector('.carousel__next');
     
+    let offset = 0;
+    let slideIndex = 1;
+
+    carouselInner.style.width = 100 * slides.length + '%';
+
+    slides.forEach(slide => {
+        slide.style.width = width;
+    });
+
+    next.addEventListener('click', () => {
+        if (offset == (+width.slice(0, width.length - 2) * (slides.length - 1))) {
+            offset = 0;
+        } else {
+            offset += +width.slice(0, width.length - 2); 
+        }
+
+        carouselInner.style.transform = `translateX(-${offset}px)`;
+
+        if (slideIndex == slides.length) {
+            slideIndex = 1;
+        } else {
+            slideIndex++;
+        }
+    });
+
+    prev.addEventListener('click', () => {
+        if (offset == 0) {
+            offset = +width.slice(0, width.length - 2) * (slides.length - 1);
+        } else {
+            offset -= +width.slice(0, width.length - 2);
+        }
+
+        carouselInner.style.transform = `translateX(-${offset}px)`;
+
+        if (slideIndex == 1) {
+            slideIndex = slides.length;
+        } else {
+            slideIndex--;
+        }
+    });
+
+
     // Catalog
     // -- Tabs
     const tabs = document.querySelectorAll('.catalog__tab');
@@ -82,8 +107,4 @@ document.addEventListener('DOMContentLoaded', () => {
     backs.forEach((back, i) => {
         toggleItemContent(back, i);
     })
-
-
-    // Modal
-    
 })
